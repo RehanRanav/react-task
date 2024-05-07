@@ -1,4 +1,17 @@
+import ProjectDetail from "./components/ProjectDetail";
+import ProjectsList from "./components/ProjectsList";
+import { useContext } from "react";
+import { getProjectDetails } from "./utils/api";
+import { Context } from "./context/Context";
+
 function App() {
+  const { projectData, setProjectData } = useContext(Context);
+
+  const FetchProjectDetails = async (projectId: string) => {
+    const response = await getProjectDetails(projectId);
+    setProjectData(response);
+  };
+
   return (
     <div>
       <div className="h-10 border-b flex items-center px-2">
@@ -6,10 +19,10 @@ function App() {
       </div>
       <div className="grid grid-cols-12 divide-x h-[calc(100vh-40px)]">
         <div className="col-span-3">
-          <p>Projects</p>
+          <ProjectsList Click={FetchProjectDetails} />
         </div>
-        <div>
-          <p>Details</p>
+        <div className="col-span-9">
+          {projectData && <ProjectDetail projectdata={projectData} />}
         </div>
       </div>
     </div>

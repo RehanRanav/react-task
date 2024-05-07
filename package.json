@@ -11,5 +11,8 @@
   "license": "ISC",
   "workspaces": [
     "frontend"
-  ]
+  ],
+  "dependencies": {
+    "vite": "^5.2.11"
+  }
 }
