@@ -1,4 +1,4 @@
-import { CreateApiData } from "../../definition";
+import { CreateApiData, UpdateTaskApiData } from "../../definition";
 
 const BASE_URL = "http://127.0.0.1:8000";
 
@@ -48,5 +48,22 @@ export const deleteProject = async (projectId: string) => {
     const updatedResponse = await getAllProjects();
     return updatedResponse;
   }
-  return await res.json();
+  return null;
+};
+
+export const getAllProjectTasks = async (projectId: string) => {
+  const response = await fetch(`${BASE_URL}/projects/${projectId}/tasks`);
+  return await response.json();
+};
+
+export const updateProjectTask = async (
+  projectId: string,
+  taskId: string,
+  data: UpdateTaskApiData
+) => {
+  const res = await fetch(`${BASE_URL}/projects/${projectId}/tasks/${taskId}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+  return res.json();
 };
