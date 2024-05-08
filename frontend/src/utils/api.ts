@@ -1,4 +1,8 @@
-import { CreateApiData, UpdateTaskApiData } from "../../definition";
+import {
+  CreateApiData,
+  UpdateTaskApiData,
+  createTaskApiData,
+} from "../../definition";
 
 const BASE_URL = "http://127.0.0.1:8000";
 
@@ -17,7 +21,7 @@ export const addNewProject = async (data: CreateApiData) => {
     const updatedResponse = await getAllProjects();
     return updatedResponse;
   }
-  return await res.json();
+  return null;
 };
 
 export const getProjectDetails = async (projectId: string) => {
@@ -33,10 +37,6 @@ export const updateProjectDetails = async (
     method: "PUT",
     body: JSON.stringify(data),
   });
-  if (res.status === 200) {
-    const updatedResponse = await getAllProjects();
-    return updatedResponse;
-  }
   return await res.json();
 };
 
@@ -56,6 +56,17 @@ export const getAllProjectTasks = async (projectId: string) => {
   return await response.json();
 };
 
+export const addNewProjectTask = async (
+  projectId: string,
+  data: createTaskApiData
+) => {
+  const response = await fetch(`${BASE_URL}/projects/${projectId}/tasks`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+  return await response.json();
+};
+
 export const updateProjectTask = async (
   projectId: string,
   taskId: string,
@@ -66,4 +77,15 @@ export const updateProjectTask = async (
     body: JSON.stringify(data),
   });
   return res.json();
+};
+
+export const deleteProjectTask = async (projectId: string, taskId: string) => {
+  const res = await fetch(`${BASE_URL}/projects/${projectId}/tasks/${taskId}`, {
+    method: "DELETE",
+  });
+  if (res.status === 200) {
+    const updatedResponse = await getAllProjectTasks(projectId);
+    return updatedResponse;
+  }
+  return null;
 };

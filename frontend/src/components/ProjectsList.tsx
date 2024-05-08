@@ -1,16 +1,23 @@
-import { FC, useContext, useEffect, useRef } from "react";
+import { FC, useContext, useEffect, useRef, useState } from "react";
 import { ProjectListProps, ProjectsData } from "../../definition";
 import { addNewProject, getAllProjects } from "../utils/api";
 import { Context } from "../context/Context";
+import toast from "react-hot-toast";
+import { ProjectListSkeleton } from "./skeletons/ProjectListSkeleton";
 
 const ProjectsList: FC<ProjectListProps> = ({ Click }) => {
   const ProjectnameInput = useRef<HTMLInputElement | null>(null);
   const { allProjects, setAllProjects } = useContext(Context);
+  const { setProjectData } = useContext(Context);
+  const [currentProject, setCurrentProject] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchProjects = async () => {
+      setIsLoading(true);
       const response = await getAllProjects();
-      setAllProjects(response);
+      setAllProjects(await response);
+      setIsLoading(false);
     };
     fetchProjects();
   }, [setAllProjects]);
@@ -23,21 +30,39 @@ const ProjectsList: FC<ProjectListProps> = ({ Click }) => {
       };
       const response = await addNewProject(data);
       setAllProjects(response);
+      if (response) {
+        toast.success("Project added successfully");
+        if (ProjectnameInput.current) ProjectnameInput.current.value = "";
+      }
     }
+  };
+
+  const handleClick = (projectId: string) => {
+    Click(projectId);
+    setCurrentProject(projectId);
+    setProjectData(undefined);
   };
 
   return (
     <div className="p-1 h-full relative">
       <div className="flex flex-col gap-1">
-        {allProjects.map((project: ProjectsData) => (
-          <div
-            className="w-full p-2 text-sm border border-black box-border rounded-md hover:cursor-pointer hover:bg-black hover:text-white font-semibold"
-            key={project.projectId}
-            onClick={() => Click(project.projectId)}
-          >
-            {project.projectName}
-          </div>
-        ))}
+        {isLoading ? (
+          <ProjectListSkeleton />
+        ) : (
+          allProjects.map((project: ProjectsData) => (
+            <div
+              className={`w-full p-2 text-sm border border-black box-border rounded-md hover:cursor-pointer hover:bg-black hover:text-white font-semibold ${
+                currentProject === project.projectId
+                  ? "bg-black text-white"
+                  : ""
+              }`}
+              key={project.projectId}
+              onClick={() => handleClick(project.projectId)}
+            >
+              {project.projectName}
+            </div>
+          ))
+        )}
       </div>
       <div className="absolute bottom-1 left-1 right-1 bg-white">
         <input

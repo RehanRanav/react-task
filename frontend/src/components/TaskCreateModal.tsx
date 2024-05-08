@@ -1,9 +1,13 @@
-import { FC, useRef, useState } from "react";
-import { Modal, Spinner } from "flowbite-react";
+import { FC, useContext, useRef, useState } from "react";
+import { Modal } from "flowbite-react";
 import { PiWarningDiamondFill } from "react-icons/pi";
 import { TaskModalProps } from "../../definition";
 import { CustomFlowbiteTheme } from "flowbite-react";
 import { dateValidation } from "../utils/validation";
+import { addNewProjectTask } from "../utils/api";
+import { Context } from "../context/Context";
+import { Spinner } from "./skeletons/Spinner";
+import toast from "react-hot-toast";
 
 const customeTheme: CustomFlowbiteTheme["modal"] = {
   root: {
@@ -60,7 +64,11 @@ const customeTheme: CustomFlowbiteTheme["modal"] = {
   },
 };
 
-const TaskModal: FC<TaskModalProps> = ({ openModal, setOpenModal }) => {
+const TaskCreateModal: FC<TaskModalProps> = ({
+  openModal,
+  setOpenModal,
+  projectId,
+}) => {
   const [fieldError, setFieldError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [disableBtn, setDisableBtn] = useState(false);
@@ -69,6 +77,7 @@ const TaskModal: FC<TaskModalProps> = ({ openModal, setOpenModal }) => {
   const descriptionRef = useRef<HTMLTextAreaElement | null>(null);
   const dateRef = useRef<HTMLInputElement | null>(null);
   const assigneeRef = useRef<HTMLInputElement | null>(null);
+  const { setAllTasks } = useContext(Context);
 
   const createNewTask = async () => {
     const titleValue = titleRef.current?.value.trim();
@@ -113,13 +122,18 @@ const TaskModal: FC<TaskModalProps> = ({ openModal, setOpenModal }) => {
       .filter((assignee) => assignee !== "");
     if (assigneesList && assigneesList?.length > 0) {
       const data = {
-        title: titleValue,
-        description: descriptionValue,
+        title: titleValue as string,
+        description: descriptionValue as string,
         status: taskStatus,
-        assignees: assigneesList,
-        dueDate: dateValue,
+        assignees: assigneesList as string[],
+        dueDate: dateValue as string,
       };
-      console.log(data);
+      const response = await addNewProjectTask(projectId, data);
+      if (response) {
+        setAllTasks((prevTasks) => [...prevTasks, response]);
+        closeModal();
+        toast.success("Task created successfully");
+      }
     } else {
       setFieldError("assigneesError");
       setError("Add Team Assignees");
@@ -142,7 +156,7 @@ const TaskModal: FC<TaskModalProps> = ({ openModal, setOpenModal }) => {
       initialFocus={titleRef}
       show={openModal}
       onClose={closeModal}
-      size={"2xl"}
+      size={"xl"}
       theme={customeTheme}
     >
       <Modal.Header>Create Task</Modal.Header>
@@ -188,11 +202,9 @@ const TaskModal: FC<TaskModalProps> = ({ openModal, setOpenModal }) => {
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="relative w-fit pr-4 text-sm after:content-['*'] after:block after:absolute after:-top-1 after:right-0 after:text-red-600">
-              Status
-            </label>
+            <label className="relative w-fit pr-4 text-sm">Status</label>
             <select
-              className="border rounded bg-gray-100 py-0.5 px-2"
+              className="rounded-sm border-2 border-black outline-none appearance-none bg-white px-8 py-2 w-fit"
               value={taskStatus}
               onChange={(e) => setTaskStatus(e.target.value)}
             >
@@ -257,4 +269,4 @@ const TaskModal: FC<TaskModalProps> = ({ openModal, setOpenModal }) => {
   );
 };
 
-export default TaskModal;
+export default TaskCreateModal;

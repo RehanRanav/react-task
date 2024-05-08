@@ -1,15 +1,16 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { TaskObject, TasksListProps } from "../../definition";
 import Task from "./Task";
-import TaskModal from "./TaskModal";
+import { Context } from "../context/Context";
+import TaskCreateModal from "./TaskCreateModal";
 
 const TasksList: FC<TasksListProps> = ({ projectId, tasks }) => {
-  const [allTasks, setAllTasks] = useState(tasks);
+  const { allTasks, setAllTasks } = useContext(Context);
   const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     setAllTasks(tasks);
-  }, [tasks]);
+  }, [tasks, setAllTasks]);
 
   return (
     <>
@@ -20,7 +21,7 @@ const TasksList: FC<TasksListProps> = ({ projectId, tasks }) => {
               Tasks
             </div>
           </div>
-          <div>
+          <div className="flex flex-col gap-1.5">
             {allTasks.length > 0 &&
               allTasks.map((task: TaskObject) => (
                 <Task
@@ -29,6 +30,7 @@ const TasksList: FC<TasksListProps> = ({ projectId, tasks }) => {
                   title={task.title}
                   description={task.description}
                   status={task.status}
+                  key={task.taskId}
                 />
               ))}
           </div>
@@ -42,7 +44,11 @@ const TasksList: FC<TasksListProps> = ({ projectId, tasks }) => {
           </div>
         </div>
       </div>
-      <TaskModal openModal={openModal} setOpenModal={setOpenModal} />
+      <TaskCreateModal
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        projectId={projectId}
+      />
     </>
   );
 };

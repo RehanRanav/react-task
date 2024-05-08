@@ -1,15 +1,20 @@
 import ProjectDetail from "./components/ProjectDetail";
 import ProjectsList from "./components/ProjectsList";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { getProjectDetails } from "./utils/api";
 import { Context } from "./context/Context";
+import { Toaster } from "react-hot-toast";
+import { ProjectDetailSkeleton } from "./components/skeletons/ProjectDetailSkeleton";
 
 function App() {
   const { projectData, setProjectData } = useContext(Context);
+  const [isLoading, setIsLoading] = useState(false);
 
   const FetchProjectDetails = async (projectId: string) => {
+    setIsLoading(true);
     const response = await getProjectDetails(projectId);
     setProjectData(response);
+    setIsLoading(false);
   };
 
   return (
@@ -22,9 +27,14 @@ function App() {
           <ProjectsList Click={FetchProjectDetails} />
         </div>
         <div className="col-span-9">
-          {projectData && <ProjectDetail projectdata={projectData} />}
+          {isLoading ? (
+            <ProjectDetailSkeleton />
+          ) : (
+            projectData && <ProjectDetail projectdata={projectData} />
+          )}
         </div>
       </div>
+      <Toaster />
     </div>
   );
 }

@@ -31,9 +31,10 @@ export interface TaskObject {
   taskId: string;
   title: string;
 }
-export interface TaskModalProps{
+export interface TaskModalProps {
   openModal: boolean;
   setOpenModal: Dispatch<SetStateAction<boolean>>;
+  projectId: string;
 }
 export interface CreateApiData {
   projectName: string;
@@ -41,4 +42,11 @@ export interface CreateApiData {
 export interface UpdateTaskApiData {
   title: string;
   status: string;
+}
+export interface createTaskApiData {
+  title: string;
+  description: string;
+  status: string;
+  assignees: string[];
+  dueDate: string;
 }
