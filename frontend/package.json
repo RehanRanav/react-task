@@ -12,8 +12,6 @@
   "dependencies": {
     "@preline/overlay": "^2.1.0",
     "dayjs": "^1.11.11",
-    "flowbite-react": "^0.9.0",
-    "preline": "^2.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",

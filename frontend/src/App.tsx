@@ -29,8 +29,12 @@ function App() {
         <div className="col-span-9">
           {isLoading ? (
             <ProjectDetailSkeleton />
+          ) : projectData ? (
+            <ProjectDetail projectdata={projectData} />
           ) : (
-            projectData && <ProjectDetail projectdata={projectData} />
+            <div className="w-full h-full flex justify-center items-center text-4xl text-gray-200">
+              Please Select The Project
+            </div>
           )}
         </div>
       </div>

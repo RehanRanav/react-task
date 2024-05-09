@@ -3,7 +3,7 @@ import { ProjectListProps, ProjectsData } from "../../definition";
 import { addNewProject, getAllProjects } from "../utils/api";
 import { Context } from "../context/Context";
 import toast from "react-hot-toast";
-import { ProjectListSkeleton } from "./skeletons/ProjectListSkeleton";
+import { ProjectCreateSkeleton, ProjectListSkeleton } from "./skeletons/ProjectListSkeleton";
 
 const ProjectsList: FC<ProjectListProps> = ({ Click }) => {
   const ProjectnameInput = useRef<HTMLInputElement | null>(null);
@@ -11,6 +11,7 @@ const ProjectsList: FC<ProjectListProps> = ({ Click }) => {
   const { setProjectData } = useContext(Context);
   const [currentProject, setCurrentProject] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isNewProjectCreating, setNewProjectCreating] = useState(false);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -23,6 +24,7 @@ const ProjectsList: FC<ProjectListProps> = ({ Click }) => {
   }, [setAllProjects]);
 
   const CreateNewProject = async () => {
+    setNewProjectCreating(true);
     const ProjectName = ProjectnameInput.current?.value.trim();
     if (ProjectName) {
       const data = {
@@ -34,7 +36,11 @@ const ProjectsList: FC<ProjectListProps> = ({ Click }) => {
         toast.success("Project added successfully");
         if (ProjectnameInput.current) ProjectnameInput.current.value = "";
       }
+    } else {
+      toast.error("Please Enter Project Name");
+      ProjectnameInput.current?.focus();
     }
+    setNewProjectCreating(false);
   };
 
   const handleClick = (projectId: string) => {
@@ -45,7 +51,7 @@ const ProjectsList: FC<ProjectListProps> = ({ Click }) => {
 
   return (
     <div className="p-1 h-full relative">
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 h-4/5 overflow-y-auto pb-8">
         {isLoading ? (
           <ProjectListSkeleton />
         ) : (
@@ -62,17 +68,21 @@ const ProjectsList: FC<ProjectListProps> = ({ Click }) => {
               {project.projectName}
             </div>
           ))
-        )}
+        )
+        }
+        {
+          isNewProjectCreating && <ProjectCreateSkeleton/>
+        }
       </div>
       <div className="absolute bottom-1 left-1 right-1 bg-white">
         <input
           type="text"
           ref={ProjectnameInput}
           placeholder="Enter Project Name"
-          className="border p-2 w-full rounded-md text-sm"
+          className="border p-2 w-full text-sm"
         />
         <button
-          className="mt-2 w-full p-2 text-sm border border-black box-border rounded-md hover:cursor-pointer bg-black text-white font-semibold"
+          className="mt-2 w-full p-2 text-sm border border-black box-border hover:cursor-pointer bg-black text-white font-semibold"
           onClick={CreateNewProject}
         >
           Add Project

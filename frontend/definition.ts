@@ -36,6 +36,12 @@ export interface TaskModalProps {
   setOpenModal: Dispatch<SetStateAction<boolean>>;
   projectId: string;
 }
+export interface DeleteModalProps {
+  openModal: boolean;
+  setOpenModal: Dispatch<SetStateAction<boolean>>;
+  item: string;
+  Click: () => void;
+}
 export interface CreateApiData {
   projectName: string;
 }

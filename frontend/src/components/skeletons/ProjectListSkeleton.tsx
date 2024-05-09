@@ -5,17 +5,25 @@ export const ProjectListSkeleton = () => {
   return (
     <>
       <div
-        className={`relative ${shimmer} overflow-hidden shadow-sm w-full h-9 p-2 box-border rounded-md hover:cursor-pointer bg-gray-100`}
+        className={`relative ${shimmer} overflow-hidden shadow-sm w-full h-9 p-2 box-border rounded-md hover:cursor-pointer bg-gray-200 animate-pulse`}
       ></div>
       <div
-        className={`relative ${shimmer} overflow-hidden shadow-sm w-full h-9 p-2 box-border rounded-md hover:cursor-pointer bg-gray-100`}
+        className={`relative ${shimmer} overflow-hidden shadow-sm w-full h-9 p-2 box-border rounded-md hover:cursor-pointer bg-gray-200 animate-pulse`}
       ></div>
       <div
-        className={`relative ${shimmer} overflow-hidden shadow-sm w-full h-9 p-2 box-border rounded-md hover:cursor-pointer bg-gray-100`}
+        className={`relative ${shimmer} overflow-hidden shadow-sm w-full h-9 p-2 box-border rounded-md hover:cursor-pointer bg-gray-200 animate-pulse`}
       ></div>
       <div
-        className={`relative ${shimmer} overflow-hidden shadow-sm w-full h-9 p-2 box-border rounded-md hover:cursor-pointer bg-gray-100`}
+        className={`relative ${shimmer} overflow-hidden shadow-sm w-full h-9 p-2 box-border rounded-md hover:cursor-pointer bg-gray-200 animate-pulse`}
       ></div>
     </>
+  );
+};
+
+export const ProjectCreateSkeleton = () => {
+  return (
+    <div
+      className={`relative ${shimmer} overflow-hidden shadow-sm w-full h-9 p-2 box-border rounded-md hover:cursor-pointer bg-gray-200 animate-pulse`}
+    ></div>
   );
 };
