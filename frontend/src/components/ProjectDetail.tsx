@@ -100,7 +100,7 @@ const ProjectDetail: FC<ProjectDetailProps> = ({ projectdata }) => {
           </div>
           <div className="flex gap-1">
             <button
-              className="py-1 px-2 text-white bg-black hover:opacity-85 rounded-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              className="py-1 px-2 text-white bg-black hover:opacity-85 rounded-sm font-semibold disabled:opacity-30 disabled:text-gray-50 disabled:cursor-not-allowed"
               onClick={updateProject}
               disabled={isChanged}
             >

@@ -20,7 +20,10 @@ export const ProjectDetailSkeleton = () => {
         </div>
       </div>
       <div className="mt-5 ml-2">
-        <div className="w-20 h-8 rounded bg-gray-100 mb-3"></div>
+        <div className="flex gap-2 items-center mb-3">
+          <div className="w-20 h-8 rounded bg-gray-100"></div>
+          <div className="w-20 h-8 rounded bg-gray-100"></div>
+        </div>
         <div className="mt-1 bg-gray-50/80 p-2 rounded-sm flex flex-col gap-0.5">
           <div className="flex justify-between w-full py-2">
             <div className="flex gap-2 items-center">
@@ -39,7 +42,6 @@ export const ProjectDetailSkeleton = () => {
             <div className="rounded w-full h-12 p-1 bg-gray-100"></div>
           </div>
         </div>
-        <div className="mt-2 w-20 h-10 rounded bg-gray-100"></div>
       </div>
     </div>
   );

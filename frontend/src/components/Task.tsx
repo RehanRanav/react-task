@@ -10,7 +10,7 @@ import DeleteModal from "./DeleteModal";
 
 const customeTheme: CustomFlowbiteTheme["dropdown"] = {
   inlineWrapper:
-    "flex items-center w-fit justify-between border rounded-sm border-black p-1",
+    "flex items-center w-fit justify-between border rounded-sm border-black py-1 px-2",
   floating: {
     item: {
       base: "flex w-full cursor-pointer items-center justify-start px-4 py-2 text-sm text-gray-700",
@@ -102,14 +102,14 @@ const Task: FC<TaskProps> = ({
         </div>
         <div className="flex gap-1">
           <button
-            className="py-1 px-2 text-sm text-white bg-black hover:opacity-85 rounded-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+            className="py-1 px-2 text-sm text-white bg-black hover:opacity-85 rounded-sm font-semibold disabled:opacity-30 disabled:text-gray-50 disabled:cursor-not-allowed"
             onClick={updateTaskDetails}
             disabled={isChanged}
           >
             Save Changes
           </button>
           <button
-            className="py-1 px-2 text-sm text-red-600 hover:opacity-85 bg-gray-200 rounded-sm"
+            className="py-1 px-2 text-sm hover:opacity-85 text-white bg-red-600  rounded-sm"
             onClick={() => setOpenModal(true)}
           >
             Delete Task
@@ -131,26 +131,26 @@ const Task: FC<TaskProps> = ({
         >
           <Dropdown.Item
             onClick={() => handleStatusChanges("In Progress")}
-            className="p-2 flex gap-1 items-center hover:bg-blue-600 hover:text-white"
+            className="p-2 flex gap-1 items-center hover:bg-black hover:text-white"
           >
             In Progress
           </Dropdown.Item>
           <Dropdown.Item
             onClick={() => handleStatusChanges("Pending")}
-            className="p-2 flex gap-1 items-center hover:bg-blue-600 hover:text-white"
+            className="p-2 flex gap-1 items-center hover:bg-black hover:text-white"
           >
             Pending
           </Dropdown.Item>
           <Dropdown.Item
             onClick={() => handleStatusChanges("Completed")}
-            className="p-2 flex gap-1 items-center hover:bg-blue-600 hover:text-white"
+            className="p-2 flex gap-1 items-center hover:bg-black hover:text-white"
           >
             Completed
           </Dropdown.Item>
         </Dropdown>
       </div>
       <div>
-        <div className="border-none bg-gray-50 h-14 max-h-14 rounded w-full outline-none appearance-none p-1 line-clamp-2">
+        <div className="border-none max-h-14 rounded w-full outline-none appearance-none p-1">
           {description}
         </div>
       </div>

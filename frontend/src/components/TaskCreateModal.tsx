@@ -1,5 +1,5 @@
 import { FC, useContext, useRef, useState } from "react";
-import { Modal } from "flowbite-react";
+import { CustomFlowbiteTheme, Dropdown, Modal } from "flowbite-react";
 import { PiWarningDiamondFill } from "react-icons/pi";
 import { TaskModalProps } from "../../definition";
 import { dateValidation } from "../utils/validation";
@@ -7,6 +7,16 @@ import { addNewProjectTask } from "../utils/api";
 import { Context } from "../context/Context";
 import { Spinner } from "./skeletons/Spinner";
 import toast from "react-hot-toast";
+
+const customeTheme: CustomFlowbiteTheme["dropdown"] = {
+  inlineWrapper:
+    "flex items-center w-fit justify-between border-2 rounded-sm border-black py-2 px-4",
+  floating: {
+    item: {
+      base: "flex w-full cursor-pointer items-center justify-start px-4 py-2 text-sm text-gray-700",
+    },
+  },
+};
 
 const TaskCreateModal: FC<TaskModalProps> = ({
   openModal,
@@ -146,15 +156,31 @@ const TaskCreateModal: FC<TaskModalProps> = ({
 
           <div className="flex flex-col gap-2">
             <label className="relative w-fit pr-4 text-sm">Status</label>
-            <select
-              className="rounded-sm border-2 border-black outline-none appearance-none bg-white px-8 py-2 w-fit"
-              value={taskStatus}
-              onChange={(e) => setTaskStatus(e.target.value)}
+            <Dropdown
+              label={taskStatus}
+              className="cursor-pointer"
+              inline
+              theme={customeTheme}
             >
-              <option value="Pending">Pending</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Completed">Completed</option>
-            </select>
+              <Dropdown.Item
+                onClick={() => setTaskStatus("In Progress")}
+                className="p-2 flex gap-1 items-center hover:bg-black hover:text-white"
+              >
+                In Progress
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => setTaskStatus("Pending")}
+                className="p-2 flex gap-1 items-center hover:bg-black hover:text-white"
+              >
+                Pending
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => setTaskStatus("Completed")}
+                className="p-2 flex gap-1 items-center hover:bg-black hover:text-white"
+              >
+                Completed
+              </Dropdown.Item>
+            </Dropdown>
           </div>
 
           <div className="flex flex-col gap-2">
